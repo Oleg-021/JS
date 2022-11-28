@@ -27,11 +27,32 @@ console.log(processedData); // [
 //  username: 'nore2000' }
 // ]; */
 
+
+//1. Пример через foreach
+/*const createUsernames = users => {
+    users.forEach(user => {
+        user.username = user.firstName.toLocaleLowerCase() +
+                        user.lastName.split("")[0].toLocaleLowerCase() +
+                        ((new Date()).getFullYear() - user.age);
+    });
+
+    return users;
+};*/
+
+// 2. Пример через map
 const createUsernames = users => {
-    //code here
+    return users.map(user => {
+        user.username = user.firstName.toLocaleLowerCase() +
+                        user.lastName.split("")[0].toLocaleLowerCase() +
+                        ((new Date()).getFullYear() - user.age);
+
+        return user;
+    });
 };
 
 const data = [
     { firstName: 'Emily', lastName: 'N.', country: 'Ireland', continent: 'Europe', age: 30, language: 'Ruby' },
     { firstName: 'Nor', lastName: 'E.', country: 'Malaysia', continent: 'Asia', age: 20, language: 'Clojure' }
 ];
+
+console.log(createUsernames(data));
