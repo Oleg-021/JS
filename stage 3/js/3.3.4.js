@@ -25,5 +25,29 @@ Hint: Вне платформы вы можете создать эти функ
 const { getUserInfo, getUsersIds } = db;
 
 function getUsersInfo(onLoad) {
+    onLoad(new Promise((resolve, reject) => {
+        const userIds = getUsersIds();
+        resolve(userIds);
+    }).then(userIds => {
+        const users = [];
 
+        for (let i=0; i<userIds.length; i++)
+            users.push(new Promise((resolve, reject) => {
+                resolve(getUserInfo(userIds[i]));
+            }).then(user => user));
+
+        return users;
+    }));
 }
+
+/*  getUsersIds(ids => {
+        let array = [];
+        let count = 0;
+        for (let i = 0; i < ids.length; i++) {
+            getUserInfo(ids[i], obj => {
+                array[i] = obj;
+                if (++count === ids.length)
+                    callback(array);
+            });
+        }
+    });*/
