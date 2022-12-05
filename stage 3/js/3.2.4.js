@@ -38,5 +38,16 @@ class TemporaryError extends Error {
 }
 
 function getRepeatableData(getData, key, maxRequestsNumber) {
-    //ваш код здесь
+    if (!maxRequestsNumber)
+        throw new AttemptsLimitExceeded();
+
+    try {
+        return getData(key);
+    } catch (err) {
+        if (err.name === "NotFoundError")
+            throw err;
+
+        if (err.name === "TemporaryError")
+            getRepeatableData(getData, key, maxRequestsNumber - 1);
+    }
 }

@@ -27,10 +27,55 @@ const { succeeded, errors } = applyFn(dataArr, callback);
 //   errors: [ExecutionError],
 errors[0].getArgData(); // '{}' */
 
-class ExecutionError {
+class ExecutionError extends Error {
+    constructor(message, stack, argData) {
+        super();
+        this.message = message;
+        this.stack = stack;
+        this.argData = argData;
+    }
 
+    getArgData() {
+        return this.argData;
+    }
 }
 
 function applyFn(dataArr, callback) {
+    return dataArr.reduce((resultObj, item) => {
+        try {
+            resultObj.succeeded.push(callback(item));
+        } catch (err) {
+            resultObj.errors.push(new ExecutionError(err.message, err.stack, item));
+        }
 
+        return resultObj;
+    }, {
+        succeeded: [],
+        errors: []
+    });
+
+    /*const resultObj = {
+        succeeded: [],
+        errors: []
+    };
+
+    for (let item of dataArr) {
+        try {
+            resultObj.succeeded.push(callback(item));
+        } catch (err) {
+            resultObj.errors.push(new ExecutionError(err.message, err.stack, item));
+        }
+    }
+
+    return resultObj;*/
 }
+
+const { succeeded, errors } = applyFn([1, 2, 3], (arg) => arg + 1);
+console.log(succeeded);
+console.log(errors);
+
+const dataArr = ['{"login":"login","password":"password"}', '{{}'];
+const callback = JSON.parse;
+
+let result = applyFn(dataArr, callback);
+console.log(result);

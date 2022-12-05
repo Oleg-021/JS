@@ -2,7 +2,6 @@
 а значениями - числовое значение счётчика. Напишите функцию incrementCounter, которой
 на вход первым параметром передаётся counterName - имя счётчика.
 
-
 Задача функцции увеличить значение счётчика counterName на 1 и обновить данные в localStorage.
 В localStorage может находится невалидный JSON, чтение которого может првести к ошибке,
 в этом случае функция должна записывать новые данные, где у указанного счетчика будет
@@ -17,5 +16,29 @@ incrementCounter('bannerClose'); // 1
 Про работу с localStorage читаем тут: https://learn.javascript.ru/localstorage */
 
 function incrementCounter(counterName){
+    let jsonObj;
 
+    try {
+        jsonObj = JSON.parse(localStorage.getItem("counters"));
+    } catch(err) {
+        jsonObj = {};
+    }
+
+    jsonObj[counterName] ? jsonObj[counterName] += 1 : jsonObj[counterName] = 1;
+
+    localStorage.setItem("counters", JSON.stringify(jsonObj));
+
+    return jsonObj[counterName];
 }
+
+
+let localSTRG = {};
+
+incrementCounter('bannerClick');
+incrementCounter('bannerClick');
+incrementCounter('bannerClick');
+incrementCounter('bannerClick');
+incrementCounter('bannerClose');
+
+console.log(localSTRG);
+console.log(JSON.parse(localSTRG["counters"]));
