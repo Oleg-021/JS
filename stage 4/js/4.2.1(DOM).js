@@ -51,11 +51,19 @@ console.log(div.nextElementSibling) // - возвращает следующий
 console.log(div.firstChild); // - возвращает первый дочерний текстовый узел
 console.log(div.firstElementChild); // - возвращает первый дочерний узел-тег
 
-// 3. document.body - возвращает тело документа
+// 3. parentElement / parent
+console.log(div.parentElement); // - возвращает родительский элемент
+console.log(div.parentNode); // - возвращает родительский узел
+
+// 4. closest - возвращает ближайшего родителя по css селектору
+console.log(div.closest("body"));
+
+// 5. document.body - возвращает тело документа
 // !!! может быть равен null, если скрипт загружается в теге head
 console.log(document.body);
 
-// 4. document.links - возвращает коллекцию(HTMLCollection) всех ссылок
+// 6. document.links - возвращает коллекцию(HTMLCollection) всех ссылок
 console.log(document.links);
 
-// 5. document.forms - возвращает коллекцию(HTMLCollection) всех форм
+// 7. document.forms - возвращает коллекцию(HTMLCollection) всех форм
+console.log(document.forms);
