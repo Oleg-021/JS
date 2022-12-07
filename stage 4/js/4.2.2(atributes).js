@@ -1,12 +1,4 @@
-const div = document.querySelector("div");
-const divLink = div.querySelector(".link");
-
-console.log(divLink);
-console.log(divLink.parentElement);
-console.log(divLink.closest(".content")); // возвращает ближайшего родителя по селктору
-
-/**
- * 1. Работа с классами
+/** 1. Работа с классами
  *    1) classList - содержит список классов выбранного элемента.
  *      * add(имя_класса) - добавляет класс в элемент;
  *      * remove(имя_класса) - удаляет класс у элемента;
@@ -34,6 +26,13 @@ console.log(divLink.closest(".content")); // возвращает ближайш
  *
  *    !!! Можно использовать собственные атрибуты для хранения какой-либо информации, в качестве флагов и т.д.
  */
+
+const div = document.querySelector("div");
+const divLink = div.querySelector(".link");
+
+console.log(divLink);
+console.log(divLink.parentElement);
+console.log(divLink.closest(".content")); // возвращает ближайшего родителя по селктору
 
 // 1. classList
 console.log(div.classList);
