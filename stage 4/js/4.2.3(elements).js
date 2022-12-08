@@ -50,6 +50,17 @@ colors.forEach(color => {
 });
 document.body.appendChild(fragment);
 
+/* 7. Дополнительные методы вставки
+        * append - node.append(...nodes or strings) – добавляет узлы или строки в конец node;
+        * prepend - node.prepend(...nodes or strings) – вставляет узлы или строки в начало node;
+        * before - node.before(...nodes or strings) –- вставляет узлы или строки до node;
+        * node.after(...nodes or strings) –- вставляет узлы или строки после node;
+        * replaceWith - node.replaceWith(...nodes or strings) –- заменяет node заданными узлами или строками. */
+
+/* 8. Клонирование элементов (cloneNode)
+*     elem.cloneNode(deep) – клонирует элемент, если deep==true, то со всеми дочерними элементами
+ */
+
 /** УДАЛЕНИЕ ЭЛЕМЕНТОВ */
 /* 1. remove - удаляет элемент со страницы */
 title.remove();
