@@ -79,32 +79,3 @@ const createTreeByAppend = function (container, obj) {
 
     container.append(ul);
 };
-
-
-
-
-/*const createTree = function (container, obj) {
-    let result;
-    const ul = document.createElement("ul");
-
-
-
-
-
-    const makeLiTree = function (container, obj) {
-        for (let key in obj) {
-
-
-            /*const li = document.createElement("li");
-            li.textContent = key;
-            container.append(li);
-
-            if (typeof obj[key] === "object" && obj[key].length > 0)
-                //makeLiTree(li, obj[key]);
-        }
-    }
-
-    makeLiTree(ul, obj);
-    container.append(ul);
-};*/
-
