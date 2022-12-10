@@ -12,7 +12,7 @@
  *
  *     !!! XMLHttpRequest имеет 2 режима работы: асинхронный и синхронный.
  *
- *     !!! Чтобы сделать запрос, трбуется 3 шага:
+ *  2. GET - получение данных:
  *     1) Создать объект XMLHttpRequest:    const/let/var request = new XMLHttpRequest(); - конструктор без аргументов
  *     2) Открыть соединение с сервером, инициализируя запрос с параметрами:    request.open(method, URL, [async, user, password]);
  *        * method - типо запроса. (обычно POST/GET);
@@ -40,16 +40,21 @@
  *        * response - тело ответа сервера. В старых версиях может встречаться как responseText.
  *     6) Отмена запроса: request.abort()
  *
+ *  3. POST - отправка данных
+ *      1) Создать объект XMLHttpRequest;
+ *      2) Открыть соединение с сервером с методом POST:   request.open("POST", URL, [async, user, password]);
+ *      3) Установить заголовки(headers) для корректной обработки информации сервером;
+ *      4) Послать запрос с данными request.send(body);
+ *      5) Слушать/обрабатывать события на запрос(request) при помощи addEventListener;
+ *      6) Получение ответа с сервера response - как правило возвращается отправленный объект.
  *
- *
- *
- *
- *   запросы работают асинхронно
  */
 
-const btn = document.querySelector("button.btn_response");
+const btnResponse = document.querySelector(".btn-response");
+const btnRequest = document.querySelector(".btn-request");
+const container = document.querySelector("div.container")
 
-const getPosts = async function (callback) {
+function getPosts(callback) {
     const xhr = new XMLHttpRequest(); // - создание экземпляра
     // 1. открываем запрос
     xhr.open("GET", "https://jsonplaceholder.typicode.com/posts"); // - открывает соединение с сервером, формируя запрос
@@ -57,7 +62,6 @@ const getPosts = async function (callback) {
     xhr.addEventListener("load", () => { // - обрабатывает событие загрузки(load)
         console.log("request loaded");
         //console.log(xhr.response); // - хранит информацию, прешедшую от сервера
-
         const response = JSON.parse(xhr.responseText);
         callback(response);
     });
@@ -67,57 +71,63 @@ const getPosts = async function (callback) {
     });
     // 4. отправляем запрос
     xhr.send(); // - отправляет запрос
-};
+}
 
-btn.addEventListener("click", e => {
+function createPost(body, callback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://jsonplaceholder.typicode.com/posts");
+    xhr.addEventListener("load", () => {
+        const response = JSON.parse(xhr.responseText);
+        callback(response);
+    });
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    xhr.addEventListener("error", () => {
+        console.log("error:");
+    });
+    xhr.send(JSON.stringify(body));
+}
+
+function cardTemplate(post) {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    const cardBody = document.createElement("div");
+    cardBody.classList.add("card-body");
+    const title = document.createElement("h5");
+    title.classList.add("card-title");
+    title.textContent = post.title;
+    const article = document.createElement("p");
+    article.classList.add("card-text");
+    article.textContent = post.body;
+    cardBody.append(title);
+    cardBody.append(article);
+    card.append(cardBody);
+    return card;
+}
+
+btnResponse.addEventListener("click", e => {
     getPosts(response => {
-        const container = document.querySelector("div.container")
         const fragment = document.createDocumentFragment();
 
         response.forEach(post => {
-            const card = document.createElement("div");
-            card.classList.add("card");
-            const cardBody = document.createElement("div");
-            cardBody.classList.add("card-body");
-            const title = document.createElement("h5");
-            title.classList.add("card-title");
-            title.textContent = post.title;
-            const article = document.createElement("p");
-            article.classList.add("card-text");
-            article.textContent = post.body;
-            cardBody.append(title);
-            cardBody.append(article);
-            card.append(cardBody);
-            fragment.append(card);
+            fragment.append(cardTemplate(post));
         });
 
         container.append(fragment);
     });
 });
 
+btnRequest.addEventListener("click", e => {
+    const newPost = {
+        id: 1,
+        title: 'foo',
+        body: 'bar',
+        userId: 1,
+    };
 
-
-
-
-
-
-
-
-/*getPosts(response => {
-    const divResponse = document.createElement("div");
-    divResponse.classList.add("response");
-
-    for (let item of response) {
-        const ul = document.createElement("ul");
-
-        for (let key in item) {
-            const li = document.createElement("li");
-            li.textContent = ": " + item[key];
-            const b = document.createElement("b");
-            b.textContent = key;
-            li.prepend(b);
-            ul.append(li);
-        }
-
-    }
-});*/
+    createPost(newPost, (response) => {
+       console.log(response);
+       const card = cardTemplate(response);
+       container.prepend(card);
+       //container.insertAdjacentElement("afterbegin", card);
+    });
+});
