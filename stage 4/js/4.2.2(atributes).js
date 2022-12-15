@@ -53,3 +53,4 @@ div.setAttribute("id", "myId");
 div.id = "myId2";
 div.hasAttribute("id");
 
+
